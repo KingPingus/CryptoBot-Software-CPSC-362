@@ -1,5 +1,4 @@
 import requests
-from typing import Union
 
 from fastapi import FastAPI
 
@@ -21,10 +20,6 @@ def get_crypto_price(crypto_symbol="BTC"):
     if "data" in response and crypto_symbol in response["data"]:
         return response["data"][crypto_symbol]["quote"]["USD"]["price"]
     return "Not found"
-
-@app.get("/")
-def read_root():
-    return {"message": "CryptoBot backend running!"}
 
 @app.get("/crypto/{symbol}")
 def crypto_price(symbol:str):
