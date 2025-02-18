@@ -1,10 +1,11 @@
 import requests
-
-from fastapi import FastAPI
+import os
+import asyncio
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 app = FastAPI()
 
-api_key = "690e454d-4fd1-4154-810a-554c1b0a9619"
+api_key = os.getenv("COINMARKETCAP_API_KEY", "690e454d-4fd1-4154-810a-554c1b0a9619")
 base_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
 
 def get_crypto_price(crypto_symbol="BTC"):
@@ -18,10 +19,29 @@ def get_crypto_price(crypto_symbol="BTC"):
     response = requests.get(base_url, headers=headers, params=params).json()
     
     if "data" in response and crypto_symbol in response["data"]:
-        return response["data"][crypto_symbol]["quote"]["USD"]["price"]
-    return "Not found"
+        return {
+          "price": response["data"][crypto_symbol]["quote"]["USD"]["price"],
+          "market_cap": response["data"][crypto_symbol]["quote"]["USD"]["market_cap"],
+          "volume_24h": response["data"][crypto_symbol]["quote"]["USD"]["volume_24h"]
+        }
+    return None
 
 @app.get("/crypto/{symbol}")
-def crypto_price(symbol:str):
-    price = get_crypto_price(symbol.upper())
-    return {"crypto": symbol.upper(), "price": price}
+def crypto_price(symbol: str):
+    data = get_crypto_price(symbol.upper())
+    return {"crypto": symbol.upper(), **data}
+
+@app.websocket("/ws/crypto/{symbol}")
+async def crypto_price_websocket(websocket: WebSocket, symbol:str):
+  await websocket.accept()
+  try:
+    while True:
+      data = get_crypto_price(symbol.upper())
+      if data:
+        await websocket.send_json({"crypto": symbol.upper(), **data})
+      else:
+        await websocket.send_json({"error": "Crypto Not Found"})
+        
+      await asyncio.sleep(5)
+  except WebSocketDisconnect:
+    print(f"Client disconnected from {symbol.upper()} WebSocket")
