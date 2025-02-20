@@ -1,7 +1,7 @@
 import requests
 import os
 import asyncio
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI
 
 app = FastAPI()
 
@@ -30,18 +30,3 @@ def get_crypto_price(crypto_symbol="BTC"):
 def crypto_price(symbol: str):
     data = get_crypto_price(symbol.upper())
     return {"crypto": symbol.upper(), **data}
-
-@app.websocket("/ws/crypto/{symbol}")
-async def crypto_price_websocket(websocket: WebSocket, symbol:str):
-  await websocket.accept()
-  try:
-    while True:
-      data = get_crypto_price(symbol.upper())
-      if data:
-        await websocket.send_json({"crypto": symbol.upper(), **data})
-      else:
-        await websocket.send_json({"error": "Crypto Not Found"})
-        
-      await asyncio.sleep(5)
-  except WebSocketDisconnect:
-    print(f"Client disconnected from {symbol.upper()} WebSocket")
