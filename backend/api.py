@@ -8,7 +8,8 @@ load_dotenv('api.env')
 app = FastAPI()
 
 api_key = os.getenv("COINMARKETCAP_API_KEY")
-base_url = os.getenv("DATABASE_URL", "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest")
+base_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+
 def get_crypto_price(crypto_symbol="BTC"):
     headers = {
         "X-CMC_PRO_API_KEY": api_key
@@ -21,20 +22,11 @@ def get_crypto_price(crypto_symbol="BTC"):
     response = httpx.get(base_url, headers=headers, params=params).json()
     
     if "data" in response and crypto_symbol in response["data"]:
-        price = response["data"][crypto_symbol]["quote"]["USD"]["price"],
-        market_cap = response["data"][crypto_symbol]["quote"]["USD"]["market_cap"],
-        volume_24h = response["data"][crypto_symbol]["quote"]["USD"]["volume_24h"]
-       
-        """ return {
+        return {
           "price": response["data"][crypto_symbol]["quote"]["USD"]["price"],
           "market_cap": response["data"][crypto_symbol]["quote"]["USD"]["market_cap"],
           "volume_24h": response["data"][crypto_symbol]["quote"]["USD"]["volume_24h"]
-        } """
-    return {
-        "Price": price,
-        "market_cap": market_cap,
-        "volume_24h": volume_24h
-    }
+        }
 
 @app.get('/')
 def read_root() :
