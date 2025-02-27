@@ -8,7 +8,7 @@ load_dotenv('api.env')
 app = FastAPI()
 
 api_key = os.getenv("COINMARKETCAP_API_KEY")
-base_url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
+base_url = os.getenv("DATABASE_URL")
 
 def get_crypto_price(crypto_symbol="BTC"):
     headers = {
