@@ -1,20 +1,19 @@
-<script>import Header from './Header.svelte';
+<script>
 import '../app.css';
 
 let { children } = $props();</script>
 
 <div class="app">
-	<Header></Header>
 
 	<main>
 		{@render children()}
 	</main>
 
-	<footer>
+	<!-- <footer>
 		<p>
 			visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn about SvelteKit
 		</p>
-	</footer>
+	</footer> -->
 </div>
 
 
@@ -36,7 +35,7 @@ let { children } = $props();</script>
 		box-sizing: border-box;
 	}
 
-	footer {
+	/* footer {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -52,5 +51,5 @@ let { children } = $props();</script>
 		footer {
 			padding: 12px 0;
 		}
-	}
+	} */
 </style>

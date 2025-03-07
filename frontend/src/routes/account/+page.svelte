@@ -14,9 +14,9 @@
 
   import { Badge } from "$lib/components/ui/badge/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
-  import * as Card from "$lib/components/ui/card/index.js";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
+  import { page } from '$app/state';
   import * as Sheet from "$lib/components/ui/sheet/index.js";
 </script>
 
@@ -40,55 +40,30 @@
             class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
             <ChartLine class="h-4 w-4" />
-            Dashboard
+            Profile
           </a>
           <a
             href="##"
-            class="bg-muted text-primary hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
+            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
             <Coins class="h-4 w-4" />
-            Coin List
-            <Badge
-              class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-            >
-              0
-            </Badge>
+            Settings
           </a>
-          <a
+          <!-- <a
             href="##"
             class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
             <Package class="h-4 w-4" />
             Server Options
-          </a>
-          <a
-            href="##"
-            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            <Users class="h-4 w-4" />
-            Account
-          </a>
+          </a> -->
           <a
             href="##"
             class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
             <Headset class="h-4 w-4" />
-            Contact Us
+            Logout
           </a>
         </nav>
-      </div>
-      <div class="mt-auto p-4">
-        <Card.Root>
-          <Card.Header class="p-2 pt-0 md:p-4">
-            <Card.Title>Upgrade to Pro</Card.Title>
-            <Card.Description>
-              Unlock all features and get unlimited access to our support team.
-            </Card.Description>
-          </Card.Header>
-          <Card.Content class="p-2 pt-0 md:p-4 md:pt-0">
-            <Button size="sm" class="w-full">Upgrade</Button>
-          </Card.Content>
-        </Card.Root>
       </div>
     </div>
   </div>
@@ -153,20 +128,6 @@
               Contact Us
             </a>
           </nav>
-          <div class="mt-auto">
-            <Card.Root>
-              <Card.Header>
-                <Card.Title>Upgrade to Pro</Card.Title>
-                <Card.Description>
-                  Unlock all features and get unlimited access to our support
-                  team.
-                </Card.Description>
-              </Card.Header>
-              <Card.Content>
-                <Button size="sm" class="w-full">Upgrade</Button>
-              </Card.Content>
-            </Card.Root>
-          </div>
         </Sheet.Content>
       </Sheet.Root>
       <div class="w-full flex-1">
@@ -194,29 +155,25 @@
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
-          <DropdownMenu.Label>My Account</DropdownMenu.Label>
+          <DropdownMenu.Label>
+            <a href="/account" 
+              aria-current={page.url.pathname === '/account' ? 'page' : undefined}>
+              <button type="button">Profile</button>
+            </a>
+            </DropdownMenu.Label>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item>Settings</DropdownMenu.Item>
-          <DropdownMenu.Item>Support</DropdownMenu.Item>
+          <DropdownMenu.Item><button type="button">Settings</button></DropdownMenu.Item>
+          <DropdownMenu.Item><button type="button">Support</button></DropdownMenu.Item>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item>Logout</DropdownMenu.Item>
+          <DropdownMenu.Item><button type="button">Logout</button></DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </header>
     <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div class="flex items-center">
-        <h1 class="text-lg font-semibold md:text-2xl">Coin List</h1>
+        <h1 class="text-lg font-semibold md:text-2xl">Profile</h1>
       </div>
-      <div class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-        <div class="flex flex-col items-center gap-1 text-center">
-          <h3 class="text-2xl font-bold tracking-tight">You have no coins to track.</h3>
-          <p class="text-muted-foreground text-sm">
-            You can start seeing graphs as soon as you add a coin.
-          </p>
-          <Button class="mt-4">Add Coin</Button>
-        </div>
-      </div>
+      
     </main>
   </div>
 </div>
-
