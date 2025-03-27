@@ -19,19 +19,40 @@
   import { page } from '$app/state';
   import * as Sheet from "$lib/components/ui/sheet/index.js";
 
+  import { onMount } from 'svelte';
+
   async function logout() {
     await fetch('/logout', { method: 'POST' });
     window.location.href = '/';
   }
+
+  let data;
+
+  async function fetchData() {
+    console.log('Fetching data from the backend...');
+    const response = await fetch('http://localhost:8000/market');
+    console.log('Response:', response);
+    if (response.ok) {
+      const result = await response.json();
+      data = result.data;
+      console.log('Data received:', data);
+    } else {
+      console.error('Failed to fetch data:', response.statusText);
+    }
+  }
+
+  onMount(() => {
+    fetchData();
+  });
 </script>
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
   <div class="bg-muted/40 hidden border-r md:block">
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <a href="/" class="flex items-center gap-2 font-semibold">
+        <a href="/dashboard" class="flex items-center gap-2 font-semibold">
           <Bot class="h-6 w-6" />
-          <span class="">Crypto Market Bot</span>
+          <span>Crypto Market Bot</span>
         </a>
         <Button variant="outline" size="icon" class="ml-auto h-8 w-8">
           <Bell class="h-4 w-4" />
@@ -185,13 +206,40 @@
       </div>
       <div class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
         <div class="flex flex-col items-center gap-1 text-center">
-          <h3 class="text-2xl font-bold tracking-tight">You have no coins to track.</h3>
+          <table class="market-table">
+            <thead>
+              <tr>
+                <th>#Rank</th>
+                <th>Token Name</th>
+                <th>Price(USD)</th>
+                <th>Volume(USD)</th>
+                <th>Market Cap(USD)</th>
+                <th>24h Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each data as coin, index}
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{coin.name}</td>
+                  <td>${coin.quote.USD.price.toFixed(2)}</td>
+                  <td>${coin.quote.USD.volume_24h.toLocaleString()}</td>
+                  <td>${coin.quote.USD.market_cap.toLocaleString()}</td>
+                  <td class="{coin.quote.USD.percent_change_24h > 0 ? 'positive' : 'negative'}">
+                    {coin.quote.USD.percent_change_24h.toFixed(2)}%
+                  </td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+          <!-- <h3 class="text-2xl font-bold tracking-tight">You have no coins to track.</h3>
           <p class="text-muted-foreground text-sm">
             You can start seeing graphs as soon as you add a coin.
           </p>
-          <Button class="mt-4">Add Coin</Button>
+          <Button class="mt-4">Add Coin</Button> -->
         </div>
       </div>
     </main>
   </div>
 </div>
+
