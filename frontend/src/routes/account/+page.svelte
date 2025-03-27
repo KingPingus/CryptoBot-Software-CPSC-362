@@ -1,6 +1,5 @@
 <script lang="ts">
   import CircleUser from "lucide-svelte/icons/circle-user";
-  import ChartLine from "lucide-svelte/icons/chart-line";
   import Package from "lucide-svelte/icons/package";
   import House from "lucide-svelte/icons/house";
   import ShoppingCart from "lucide-svelte/icons/shopping-cart";
@@ -9,8 +8,10 @@
   import Bot from "lucide-svelte/icons/bot";
   import Search from "lucide-svelte/icons/search";
   import Users from "lucide-svelte/icons/users";
-  import Coins from "lucide-svelte/icons/coins";
   import Headset from "lucide-svelte/icons/headset";
+  import Settings from "lucide-svelte/icons/settings";
+  import UserPen from "lucide-svelte/icons/user-pen";
+  import { LogOut } from "lucide-svelte";
 
   import { Badge } from "$lib/components/ui/badge/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
@@ -29,7 +30,7 @@
   <div class="bg-muted/40 hidden border-r md:block">
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <a href="/" class="flex items-center gap-2 font-semibold">
+        <a href="/dashboard" class="flex items-center gap-2 font-semibold">
           <Bot class="h-6 w-6" />
           <span class="">Crypto Market Bot</span>
         </a>
@@ -40,33 +41,33 @@
       </div>
       <div class="flex-1">
         <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
+          <!-- <a
+            href="/dashboard"
+            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
+          >
+            <House class="h-4 w-4" />
+            Home
+          </a> -->
           <a
             href="##"
             class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
-            <ChartLine class="h-4 w-4" />
+            <UserPen class="h-4 w-4" />
             Profile
           </a>
           <a
             href="##"
             class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
-            <Coins class="h-4 w-4" />
+            <Settings class="h-4 w-4" />
             Settings
           </a>
-          <!-- <a
-            href="##"
-            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
-            <Package class="h-4 w-4" />
-            Server Options
-          </a> -->
           <a
             href="##"
             class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
           >
-            <Headset class="h-4 w-4" />
-            Logout
+            <LogOut class="h-4 w-4" />
+            <button type="button" on:click={logout}>Logout</button>
           </a>
         </nav>
       </div>
@@ -88,10 +89,6 @@
         </Sheet.Trigger>
         <Sheet.Content side="left" class="flex flex-col">
           <nav class="grid gap-2 text-lg font-medium">
-            <a href="##" class="flex items-center gap-2 text-lg font-semibold">
-              <Package class="h-6 w-6" />
-              <span class="sr-only">Acme Inc</span>
-            </a>
             <a
               href="##"
               class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
