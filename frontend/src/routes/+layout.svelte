@@ -1,35 +1,35 @@
 <script>
-    import '../app.css';
-    import { currentUser } from '$lib/pocketbase';
+	import '../app.css';
+
+	let { children } = $props();
+
 </script>
 
-<div class="bg-neutral text-neutral-content">
-    <div class="max-w-xl mx-auto navbar">
-        <div class="navbar-start">
-            <a href="/" class="btn btn-ghost text-xl">Crypto Market Bot</a>
-        </div>
-        <div class="navbar-end">
-            <ul class="menu menu-horizontal">
-                {#if $currentUser}
-                    <li>
-                        <form method="POST" action="/logout" use:enhance={() => {
-                            return async ({ result }) => {
-                                pb.authStore.clear();
-                                await applyAction(result);
-                            }
-                        }}>
-                            <button>Log out</button>
-                        </form>
-                    </li>
-                {:else}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-                {/if}
-            </ul>
-        </div>
-    </div>
+<div class="app">
+
+	<main>
+		{@render children()}
+	</main>
+
 </div>
 
-<div class="max-w-xl mx-auto py-8 px-4">
-    <slot />
-</div>
+
+<style>
+	.app {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+
+	main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		width: 100%;
+		max-width: 64rem;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+
+</style>
