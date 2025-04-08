@@ -1,40 +1,66 @@
-import os
 import httpx
-from fastapi import FastAPI, HTTPException
-from dotenv import load_dotenv
 
-load_dotenv('api.env')
+# Set your CoinMarketCap API key
+API_KEY = "690e454d-4fd1-4154-810a-554c1b0a9619"
 
-app = FastAPI()
-
-api_key = os.getenv("COINMARKETCAP_API_KEY")
-base_url = os.getenv("DATABASE_URL")
-
-def get_crypto_price(crypto_symbol="BTC"):
-    headers = {
-        "X-CMC_PRO_API_KEY": api_key
-    }
+# Function to get crypto price from CoinMarketCap
+async def get_crypto_price(symbol: str):
+    url = f"https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest"
     params = {
-        "symbol": crypto_symbol,
-        "convert": "USD"
+        "symbol": symbol,
+        "convert": "USD",
     }
-    print(f"base_url: {base_url}")
-    response = httpx.get(base_url, headers=headers, params=params).json()
-    
-    if "data" in response and crypto_symbol in response["data"]:
-        return {
-          "price": response["data"][crypto_symbol]["quote"]["USD"]["price"],
-          "market_cap": response["data"][crypto_symbol]["quote"]["USD"]["market_cap"],
-          "volume_24h": response["data"][crypto_symbol]["quote"]["USD"]["volume_24h"]
-        }
+    headers = {
+        "X-CMC_PRO_API_KEY": API_KEY,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, params=params, headers=headers)
+        data = response.json()
+        if response.status_code == 200:
+            crypto_data = data["data"].get(symbol.upper())
+            if crypto_data:
+                quote = crypto_data["quote"]["USD"]
+                return {
+                    "name": crypto_data["name"],
+                    "symbol": crypto_data["symbol"],
+                    "price": quote["price"],
+                    "market_cap": quote["market_cap"],
+                    "24h_change": quote["percent_change_24h"],
+                    "image": crypto_data.get("logo", ""),
+                    "circulating_supply": crypto_data["circulating_supply"],
+                    "total_supply": crypto_data["total_supply"],
+                }
+            else:
+                return None
+        else:
+            return None
 
-@app.get('/')
-def read_root() :
-    return {"System Message" : "Today's Market"}
-@app.get("/crypto/{symbol}")
-def crypto_price(symbol: str):
-    data = get_crypto_price(symbol.upper())
-    if data :
-        return {"crypto": symbol.upper(), **data}
-    else :
-        raise HTTPException(status_code=404, detail="Sorry, this Cryptocurrency is not availble right now")
+# Function to get trending coins
+async def get_trending_cryptos():
+    url = f"https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
+    params = {
+        "limit": 10,
+        "convert": "USD",
+        "sort": "market_cap",  # You can adjust the sorting method here
+    }
+    headers = {
+        "X-CMC_PRO_API_KEY": API_KEY,
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, params=params, headers=headers)
+        data = response.json()
+        if response.status_code == 200:
+            trending_coins = []
+            for coin in data["data"]:
+                trending_coins.append({
+                    "name": coin["name"],
+                    "symbol": coin["symbol"],
+                    "price": coin["quote"]["USD"]["price"],
+                    "market_cap": coin["quote"]["USD"]["market_cap"],
+                    "24h_change": coin["quote"]["USD"]["percent_change_24h"],
+                    "image": coin.get("logo", ""),
+                })
+            return trending_coins
+        else:
+            return None
+
