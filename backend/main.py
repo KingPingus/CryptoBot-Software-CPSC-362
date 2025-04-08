@@ -1,13 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from api import get_crypto_price, get_trending_cryptos  # Import your functions from api.py
+from api import get_crypto_price, get_trending_cryptos 
 
 app = FastAPI()
 
-# Add CORS middleware to allow your frontend to communicate with the backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000"],  # Change this if needed for your frontend
+    allow_origins=["http://localhost:5173"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

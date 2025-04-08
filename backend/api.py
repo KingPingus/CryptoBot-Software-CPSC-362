@@ -1,6 +1,5 @@
 import httpx
 
-# Set your CoinMarketCap API key
 API_KEY = "690e454d-4fd1-4154-810a-554c1b0a9619"
 
 # Function to get crypto price from CoinMarketCap
@@ -41,7 +40,7 @@ async def get_trending_cryptos():
     params = {
         "limit": 10,
         "convert": "USD",
-        "sort": "market_cap",  # You can adjust the sorting method here
+        "sort": "market_cap",
     }
     headers = {
         "X-CMC_PRO_API_KEY": API_KEY,
