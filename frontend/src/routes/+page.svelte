@@ -21,34 +21,60 @@
 
   import { applyAction, enhance } from '$app/forms';
   import { currentUser } from '$lib/pocketbase';
-  import { pb } from "$lib/pocketbase"
+  import { pb } from "$lib/pocketbase";
 
   import { onMount } from 'svelte';
 
-  async function logout() {
-    await fetch('/logout', { method: 'POST' });
-    window.location.href = '/';
-  }
 
-  let data;
 
+  let data = [];
+
+  // Fetching the data from the API
   async function fetchData() {
     console.log('Fetching data from the backend...');
-    const response = await fetch('http://localhost:8000/market');
+    const response = await fetch('http://localhost:8000/crypto');  // API URL should be correctly set to your backend
     console.log('Response:', response);
+    
     if (response.ok) {
       const result = await response.json();
-      data = result.data;
+      data = result.data;  // Assuming the API returns {data: [...]}
       console.log('Data received:', data);
     } else {
       console.error('Failed to fetch data:', response.statusText);
     }
   }
 
+  // Fetch data when the component mounts
   onMount(() => {
     fetchData();
   });
 </script>
+
+<style>
+  .market-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .market-table th,
+  .market-table td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+
+  .market-table thead {
+    background-color: #f3f3f3;
+  }
+
+  .positive {
+    color: green;
+  }
+
+  .negative {
+    color: red;
+  }
+</style>
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
   <div class="bg-muted/40 hidden border-r md:block">
@@ -65,36 +91,22 @@
       </div>
       <div class="flex-1">
         <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-          <a
-            href="##"
-            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
+          <a href="##" class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all">
             <ChartLine class="h-4 w-4" />
             Dashboard
           </a>
-          <a
-            href="##"
-            class="bg-muted text-primary hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
+          <a href="##" class="bg-muted text-primary hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all">
             <Coins class="h-4 w-4" />
             Coin List
-            <Badge
-              class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-            >
+            <Badge class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
               0
             </Badge>
           </a>
-          <a
-            href="##"
-            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
+          <a href="##" class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all">
             <Package class="h-4 w-4" />
             Server Options
           </a>
-          <a
-            href="##"
-            class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-          >
+          <a href="##" class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all">
             <Headset class="h-4 w-4" />
             Contact Us
           </a>
@@ -102,16 +114,12 @@
       </div>
     </div>
   </div>
+
   <div class="flex flex-col">
     <header class="bg-muted/40 flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
       <Sheet.Root>
         <Sheet.Trigger asChild let:builder>
-          <Button
-            variant="outline"
-            size="icon"
-            class="shrink-0 md:hidden"
-            builders={[builder]}
-          >
+          <Button variant="outline" size="icon" class="shrink-0 md:hidden">
             <Menu class="h-5 w-5" />
             <span class="sr-only">Toggle navigation menu</span>
           </Button>
@@ -122,43 +130,26 @@
               <Package class="h-6 w-6" />
               <span class="sr-only">Acme Inc</span>
             </a>
-            <a
-              href="##"
-              class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
-            >
+            <a href="##" class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2">
               <House class="h-5 w-5" />
               Dashboard
             </a>
-            <a
-              href="##"
-              class="bg-muted text-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
-            >
+            <a href="##" class="bg-muted text-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2">
               <ShoppingCart class="h-5 w-5" />
               Orders
-              <Badge
-                class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-              >
+              <Badge class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                 6
               </Badge>
             </a>
-            <a
-              href="##"
-              class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
-            >
+            <a href="##" class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2">
               <Package class="h-5 w-5" />
               Products
             </a>
-            <a
-              href="##"
-              class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
-            >
+            <a href="##" class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2">
               <Users class="h-5 w-5" />
               Customers
             </a>
-            <a
-              href="##"
-              class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
-            >
+            <a href="##" class="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2">
               <Headset class="h-5 w-5" />
               Contact Us
             </a>
@@ -169,11 +160,7 @@
         <form>
           <div class="relative">
             <Search class="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
-            <Input
-              type="search"
-              placeholder="Search coins..."
-              class="bg-background w-full appearance-none pl-8 shadow-none md:w-2/3 lg:w-1/3"
-            />
+            <Input type="search" placeholder="Search coins..." class="bg-background w-full appearance-none pl-8 shadow-none md:w-2/3 lg:w-1/3" />
           </div>
         </form>
       </div>
@@ -182,22 +169,14 @@
           {#if $currentUser}
             <DropdownMenu.Root>
               <DropdownMenu.Trigger asChild let:builder>
-                <Button
-                  builders={[builder]}
-                  variant="secondary"
-                  size="icon"
-                  class="rounded-full"
-                >
+                <Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
                   <CircleUser class="h-5 w-5" />
                   <span class="sr-only">Toggle user menu</span>
                 </Button>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content align="end">
                 <DropdownMenu.Label>
-                  <a
-                    href="/account"
-                    aria-current={page.url.pathname === '/account' ? 'page' : undefined}
-                  >
+                  <a href="/account" aria-current={page.url.pathname === '/account' ? 'page' : undefined}>
                     <button type="button">Profile</button>
                   </a>
                 </DropdownMenu.Label>
@@ -206,12 +185,7 @@
                 <DropdownMenu.Item><button type="button">Support</button></DropdownMenu.Item>
                 <DropdownMenu.Separator />
                 <DropdownMenu.Item>
-                  <form method="POST" action="/logout" use:enhance={() => {
-                    return async ({ result }) => {
-                        pb.authStore.clear();
-                        await applyAction(result);
-                    };
-                    }}>
+                  <form method="POST" action="/logout" use:enhance={() => { return async ({ result }) => { pb.authStore.clear(); await applyAction(result); }; }} >
                     <button class="btn">Log out</button>
                   </form>
                 </DropdownMenu.Item>
@@ -224,39 +198,36 @@
         </ul>
       </div>
     </header>
+
     <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div class="flex items-center">
-        <h1 class="text-lg font-semibold md:text-2xl">Coin List</h1>
+        <h1 class="text-lg font-semibold md:text-2xl">Top Coins Today</h1>
       </div>
-      <div class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-        <div class="flex flex-col items-center gap-1 text-center">
-          <table class="market-table">
-            <thead>
+
+      <!-- Coin List Table -->
+      <div class="overflow-x-auto">
+        <table class="market-table">
+          <thead>
+            <tr>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h Change</th>
+              <th>Market Cap</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each data as coin}
               <tr>
-                <th>#Rank</th>
-                <th>Token Name</th>
-                <th>Price(USD)</th>
-                <th>Volume(USD)</th>
-                <th>Market Cap(USD)</th>
-                <th>24h Change</th>
+                <td>{coin.name}</td>
+                <td>${coin.price.toFixed(2)}</td>
+                <td class={coin.change_24h > 0 ? 'positive' : 'negative'}>
+                  {coin.change_24h.toFixed(2)}%
+                </td>
+                <td>${coin.market_cap.toLocaleString()}</td>
               </tr>
-            </thead>
-            <tbody>
-              {#each data as coin, index}
-                <tr>
-                  <td>{index + 1}</td>
-                  <td>{coin.name}</td>
-                  <td>${coin.quote.USD.price.toFixed(2)}</td>
-                  <td>${coin.quote.USD.volume_24h.toLocaleString()}</td>
-                  <td>${coin.quote.USD.market_cap.toLocaleString()}</td>
-                  <td class="{coin.quote.USD.percent_change_24h > 0 ? 'positive' : 'negative'}">
-                    {coin.quote.USD.percent_change_24h.toFixed(2)}%
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        </div>
+            {/each}
+          </tbody>
+        </table>
       </div>
     </main>
   </div>
