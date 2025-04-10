@@ -23,21 +23,22 @@
   import { currentUser } from '$lib/pocketbase';
   import { pb } from "$lib/pocketbase";
 
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
 
 
   let data = [];
+  let intervalId: NodeJS.Timeout;
 
   // Fetching the data from the API
   async function fetchData() {
     console.log('Fetching data from the backend...');
-    const response = await fetch('http://localhost:8000/crypto');  // API URL should be correctly set to your backend
+    const response = await fetch('http://localhost:8000/trending');  // API URL should be correctly set to your backend
     console.log('Response:', response);
     
     if (response.ok) {
       const result = await response.json();
-      data = result.data;  // Assuming the API returns {data: [...]}
+      data = result;  // Assuming the API returns {data: [...]}
       console.log('Data received:', data);
     } else {
       console.error('Failed to fetch data:', response.statusText);
@@ -46,7 +47,17 @@
 
   // Fetch data when the component mounts
   onMount(() => {
-    fetchData();
+    fetchData(); // Initial fetch
+
+    intervalId = setInterval(() => {
+      fetchData(); // Fetch data every 5 seconds (5000 milliseconds)
+    }, 5000);
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  });
+
+  onDestroy(() => {
+    clearInterval(intervalId);
   });
 </script>
 
@@ -206,28 +217,32 @@
 
       <!-- Coin List Table -->
       <div class="overflow-x-auto">
-        <table class="market-table">
-          <thead>
-            <tr>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>24h Change</th>
-              <th>Market Cap</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each data as coin}
+        {#if data && data.length > 0}
+          <table class="market-table">
+            <thead>
               <tr>
-                <td>{coin.name}</td>
-                <td>${coin.price.toFixed(2)}</td>
-                <td class={coin.change_24h > 0 ? 'positive' : 'negative'}>
-                  {coin.change_24h.toFixed(2)}%
-                </td>
-                <td>${coin.market_cap.toLocaleString()}</td>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Market Cap</th>
               </tr>
-            {/each}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {#each data as coin}
+                <tr>
+                  <td>{coin.name}</td>
+                  <td>${coin.price?.toFixed(2)}</td>
+                  <td class={coin["24h_change"] > 0 ? 'positive' : 'negative'}>
+                    {coin["24h_change"]?.toFixed(2)}%
+                  </td>
+                  <td>${coin.market_cap?.toLocaleString()}</td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        {:else}
+          <p>Loading...</p>
+        {/if}
       </div>
     </main>
   </div>
