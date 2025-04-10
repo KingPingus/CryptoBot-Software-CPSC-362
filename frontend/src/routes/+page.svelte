@@ -223,7 +223,7 @@
               <tr>
                 <th>Coin</th>
                 <th>Price</th>
-                <th>24h Change</th>
+                <th>24H Change</th>
                 <th>Market Cap</th>
               </tr>
             </thead>
@@ -235,7 +235,7 @@
                   <td class={coin["24h_change"] > 0 ? 'positive' : 'negative'}>
                     {coin["24h_change"]?.toFixed(2)}%
                   </td>
-                  <td>${coin.market_cap?.toLocaleString()}</td>
+                  <td>${Math.trunc(coin.market_cap)?.toLocaleString()}</td>
                 </tr>
               {/each}
             </tbody>
