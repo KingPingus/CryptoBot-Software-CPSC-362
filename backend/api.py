@@ -1,4 +1,23 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import httpx
+
+app = FastAPI()
+
+origins = [
+    "http://localhost:5173",  # or the origin where your frontend is running
+    "http://localhost:8000",
+    "http://localhost",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 API_KEY = "690e454d-4fd1-4154-810a-554c1b0a9619"
 
@@ -63,3 +82,6 @@ async def get_trending_cryptos():
         else:
             return None
 
+@app.get("/trending")
+async def trending():
+    return await get_trending_cryptos()
