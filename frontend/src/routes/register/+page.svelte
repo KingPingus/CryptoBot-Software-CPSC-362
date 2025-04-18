@@ -11,6 +11,7 @@
 }}>
     <h1 class="text-2xl mb-8">Register</h1>
     <div class="form-control gap-2 mb-4">
+        <input type="name" name="name" placeholder="Name" class="input input-boredered">
         <input type="email" name="email" placeholder="Email" class="input input-boredered">
         <input type="password" name="password" placeholder="Password" class="input input-bordered">
         <input type="password" name="passwordConfirm" placeholder="Confirm Password" class="input input-bordered">
