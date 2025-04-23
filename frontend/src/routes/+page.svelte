@@ -5,7 +5,6 @@
   </header>
 
   <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    <!-- Crypto Market Overview -->
     <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
       <div class="flex items-center mb-4">
         <!-- Chart Icon -->
