@@ -84,4 +84,18 @@ async def get_trending_cryptos():
 
 @app.get("/trending")
 async def trending():
-    return await get_trending_cryptos()
+    # return await get_trending_cryptos()
+    coins = await get_trending_cryptos()
+    return {
+        "trending_coins": [
+            {
+                "symbol": coin["symbol"],
+                "name": coin["name"],
+                "price": coin["price"],
+                "market_cap": coin["market_cap"],
+                "24h_change": coin["24h_change"],
+                "image": coin.get("image", "")
+            } 
+            for coin in (coins if coins else [])
+        ]
+    }
