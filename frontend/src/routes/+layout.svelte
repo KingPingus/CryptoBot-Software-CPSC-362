@@ -29,7 +29,6 @@
 	const navigation = [
 		{ title: 'Dashboard', href: '/', icon: ChartLine },
 		{ title: 'Coin List', href: '/coin-list', icon: Coins },
-		{ title: 'Server Options', href: '/server-options', icon: Package },
 		{ title: 'Contact Us', href: '/contact-us', icon: Headset }
 	];
 </script>
@@ -90,7 +89,7 @@
 									<span class="sr-only">Toggle user menu</span>
 								</Button>
 							</DropdownMenu.Trigger>
-							<DropdownMenu.Content align="end">
+							<DropdownMenu.Content align="end" class="bg-white">
 								<DropdownMenu.Label>
 									<a
 										href="/profile"

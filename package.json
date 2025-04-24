@@ -1,8 +1,11 @@
 {
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "cors": "^2.8.5",
     "nodejs": "^0.0.0",
-    "pocketbase": "^0.25.2"
+    "pocketbase": "^0.25.2",
+    "svelte-fa": "^4.0.4"
   },
   "devDependencies": {
     "@types/node": "^22.14.1"
