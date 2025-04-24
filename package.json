@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
+    "nodejs": "^0.0.0",
     "pocketbase": "^0.25.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1"
   }
 }

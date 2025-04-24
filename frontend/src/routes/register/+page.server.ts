@@ -12,7 +12,8 @@ export const actions: Actions = {
 
         try {
             await locals.pb.collection('users').create(data);
-            await locals.pb.collection('users').authWithPassword(data.email, data.password);
+            // await locals.pb.collection('users').authWithPassword(data.email, data.password);
+            await locals.pb.collection('users').requestVerification(data.email);
         } catch (e) {
             console.error(e);
             return {
@@ -20,6 +21,6 @@ export const actions: Actions = {
                 message: e
             }
         }
-        throw redirect(303, '/');
+        throw redirect(303, '/login');
     }
 };
