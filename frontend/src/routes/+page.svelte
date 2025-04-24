@@ -1,6 +1,12 @@
+<script lang="ts">
+	import Bot from "lucide-svelte/icons/bot";
+</script>
 <div class="container mx-auto p-4">
   <header class="mb-8">
-    <h1 class="text-4xl font-bold text-center">Crypto Market Bot</h1>
+    <h1 class="text-4xl font-bold text-center flex items-center justify-center gap-2">
+      <Bot class="h-9 w-9" />
+      Crypto Market Bot
+    </h1>
     <p class="text-gray-600 text-center">Your all-in-one cryptocurrency companion.</p>
   </header>
 

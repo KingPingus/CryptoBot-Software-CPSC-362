@@ -2,8 +2,8 @@
 	import "../app.css";
 	import CircleUser from "lucide-svelte/icons/circle-user";
 	import ChartLine from "lucide-svelte/icons/chart-line";
-	import Package from "lucide-svelte/icons/package";
 	import Bell from "lucide-svelte/icons/bell";
+	import BellOff from "lucide-svelte/icons/bell-off";
 	import Bot from "lucide-svelte/icons/bot";
 	import Search from "lucide-svelte/icons/search";
 	import Coins from "lucide-svelte/icons/coins";
@@ -17,8 +17,11 @@
 	import { currentUser } from '$lib/pocketbase';
 	import { pb } from "$lib/pocketbase";
 	import { goto } from '$app/navigation';
+	import { scale } from "svelte/transition";
+    import { quintOut } from "svelte/easing";
 
 	let searchTerm = "";
+	let notificationsMuted = false;
 
 	function searchCrypto() {
 		if (searchTerm) {
@@ -41,9 +44,22 @@
 					<Bot class="h-6 w-6" />
 					<span>Crypto Market Bot</span>
 				</a>
-				<Button variant="outline" size="icon" class="ml-auto h-8 w-8">
-					<Bell class="h-4 w-4" />
-					<span class="sr-only">Toggle notifications</span>
+				<Button 
+					variant="outline" 
+					size="icon" 
+					class="ml-auto h-8 w-8"
+					on:click={() => notificationsMuted = !notificationsMuted}
+				>
+					{#if notificationsMuted}
+						<span in:scale={{ duration: 200, easing: quintOut }} out:scale={{ duration: 150 }}>
+							<BellOff class="h-4 w-4" />
+						</span>
+					{:else}
+						<span in:scale={{ duration: 200, easing: quintOut }} out:scale={{ duration: 150 }}>
+							<Bell class="h-4 w-4" />
+						</span>
+					{/if}
+					<span class="sr-only">{notificationsMuted ? 'Unmute' : 'Mute'} notifications</span>
 				</Button>
 			</div>
 			<div class="flex-1">
@@ -144,4 +160,29 @@
 			<slot />
 		</main>
 	</div>
+	<footer class="fixed bottom-0 left-0 mx-2 mb-1 text-[9px] text-muted-foreground select-none whitespace-nowrap max-w-full overflow-hidden">
+		© {new Date().getFullYear()} Crypto Market Bot. All rights reserved.
+	</footer>
 </div>
+
+<style>
+	.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+	}
+
+	button {
+		transition: transform 0.1s ease;
+	}
+
+	button:active {
+		transform: scale(0.95);
+	}
+</style>

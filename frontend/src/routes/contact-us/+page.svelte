@@ -1,6 +1,7 @@
 <script lang="ts">
     import { faTwitter, faTelegram, faGithub } from '@fortawesome/free-brands-svg-icons';
     import Fa from 'svelte-fa';
+    import Bot from 'lucide-svelte/icons/bot';
 
     let name = "";
     let email = "";
@@ -21,7 +22,10 @@
 
 <div class="flex flex-col items-center w-full min-h-screen bg-gray-50 py-12 px-4">
     <div class="w-full max-w-2xl bg-white rounded-xl shadow-md p-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Contact Crypto Market Bot</h1>
+        <div class="flex items-center gap-3 mb-2">
+            <h1 class="text-3xl font-bold text-gray-900">Contact Us</h1>
+            <Bot class="h-8 w-8 text-gray-900" />
+        </div>
         <p class="text-gray-600 mb-6">
             Have a question, feedback, or need support? Reach out to us and our team will get back to you within 24 hours.
         </p>
