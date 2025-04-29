@@ -8,6 +8,7 @@
 	import Search from "lucide-svelte/icons/search";
 	import Coins from "lucide-svelte/icons/coins";
 	import Headset from "lucide-svelte/icons/headset";
+	import ListPlus from "lucide-svelte/icons/list-plus";
 
 	import { Button } from "$lib/components/ui/button/index.js";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
@@ -31,7 +32,8 @@
 
 	const navigation = [
 		{ title: 'Dashboard', href: '/', icon: ChartLine },
-		{ title: 'Coin List', href: '/coin-list', icon: Coins },
+		{ title: 'Trending Coins', href: '/coin-list', icon: Coins },
+		{ title: 'My Coin List', href: '/my-coin-list', icon: ListPlus }, // Add this line, import Star icon if needed
 		{ title: 'Contact Us', href: '/contact-us', icon: Headset }
 	];
 </script>
