@@ -9,14 +9,19 @@
     let emailModalOpen = false;
     let usernameModalOpen = false;
     let loading = false;
+    let verificationSent = false;
 
     const submitUpdateEmail = () => {
         loading = true;
         return async ({ result }) => {
             switch (result.type) {
                 case 'success':
+                    verificationSent = true;
                     await invalidateAll();
-                    emailModalOpen = false;
+                    setTimeout(() => {
+                        emailModalOpen = false;
+                        verificationSent = false;
+                    }, 3000);
                     break;
                 case 'error':
                     break;
@@ -52,21 +57,28 @@
         <button class="btn btn-primary mb-2 bg-gray-100 text-gray-700 hover:bg-gray-300 rounded-full px-6 py-2" on:click={() => (emailModalOpen = true)}>Change Email</button>
         <Modal label="change-email" bind:open={emailModalOpen}>
             <h3 slot="heading" class="text-xl font-bold text-gray-900 mb-4">Change Your Email</h3>
-            <form action="?/updateEmail" method="POST" class="space-y-4" use:enhance={submitUpdateEmail}>
-                <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Enter your new email address"
-                    required={true}
-                    value={form?.data?.email}
-                    disabled={loading}
-                />
-                <input type="hidden" name="id" value={data?.user?.id} />
-                <button type="submit" class="btn btn-primary w-full bg-gray-100 text-gray-700 hover:bg-gray-300 rounded-full px-6 py-2" disabled={loading}>
-                    Change my email
-                </button>
-            </form>
+            
+            {#if verificationSent}
+                <div class="p-4 bg-green-100 text-green-800 rounded-lg mb-4">
+                    Verification email sent.
+                </div>
+            {:else}
+                <form action="?/updateEmail" method="POST" class="space-y-4" use:enhance={submitUpdateEmail}>
+                    <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        label="Enter your new email address"
+                        required={true}
+                        value={form?.data?.email}
+                        disabled={loading}
+                    />
+                    <input type="hidden" name="id" value={data?.user?.id} />
+                    <button type="submit" class="btn btn-primary w-full bg-gray-100 text-gray-700 hover:bg-gray-300 rounded-full px-6 py-2" disabled={loading}>
+                        Change my email
+                    </button>
+                </form>
+            {/if}
         </Modal>
     </div>
 

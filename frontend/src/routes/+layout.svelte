@@ -30,11 +30,29 @@
 		}
 	}
 
-	const navigation = [
+	// const navigation = [
+	// 	{ title: 'Dashboard', href: '/', icon: ChartLine },
+	// 	{ title: 'Trending Coins', href: '/coin-list', icon: Coins },
+	// 	{ title: 'My Coin List', href: '/my-coin-list', icon: ListPlus },
+	// 	{ title: 'Contact Us', href: '/contact-us', icon: Headset }
+	// ];
+	const baseNavigation = [
 		{ title: 'Dashboard', href: '/', icon: ChartLine },
-		{ title: 'Trending Coins', href: '/coin-list', icon: Coins },
-		{ title: 'My Coin List', href: '/my-coin-list', icon: ListPlus }, // Add this line, import Star icon if needed
+		{ title: 'Trending Coins', href: '/coin-list', icon: Coins }
+  	];
+
+	const authNavigation = [
+		{ title: 'My Coin List', href: '/my-coin-list', icon: ListPlus },
 		{ title: 'Contact Us', href: '/contact-us', icon: Headset }
+	];
+
+	const contactOnly = [
+		{ title: 'Contact Us', href: '/contact-us', icon: Headset }
+	];
+
+	$: navigation = [
+		...baseNavigation,
+		...($currentUser ? authNavigation : contactOnly)
 	];
 </script>
 
