@@ -8,10 +8,11 @@
 
 ## Requirements to run this Application (**Very Important**)
 
-| Name of Program   | Windows | MacOS |
-| ----------------- | ------- | ----- |
-| Svelte            |         |       |
-| FastAPI           |         |       |
-| Uvicorn           |         |       |
-| Npm               |         |       |
-| NodeJS            |         |       |
+| Name of Program                        | Windows | MacOS |
+| -------------------------------------- | ------- | ----- |
+| Svelte - Frontend Framework            |         |       |
+| FastAPI - Backend Framework            | `pip install "fastapi[standard]"` | `pip3 install "fastapi[standard]"` |
+| Uvicorn - Backend ASGI                 | `pip install uvicorn`             | `pip3 install uvicorn`             |
+| Npm - Node Package Manager             |         |       |
+| NodeJS - Javascript Runtime Enviroment | https://nodejs.org | https://nodejs.org |
+| CORS - Cross-Origin Resource Sharing   |         |       |
